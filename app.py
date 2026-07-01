@@ -83,7 +83,7 @@ def df_cache_key(df: pd.DataFrame) -> str:
 # ═══════════════════════════════════════════════════════════
 with st.sidebar:
     st.header('📁 Данные')
-    uploaded = st.file_uploader('Загрузи txt/csv файл', type=['txt', 'csv'])
+    uploaded = st.file_uploader('Загрузи txt/csv файл', type=None)
     st.markdown('---')
 
 if uploaded is None:
