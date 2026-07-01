@@ -44,6 +44,7 @@ EVENT_MAPPING = {
     'sq1|Normal': 'sq1',
     'clock|Normal': 'clock',
     'skewb|Normal': 'skewb',
+    'fto|Normal': 'fto',
 }
 
 EVENT_DISPLAY = {
@@ -53,7 +54,7 @@ EVENT_DISPLAY = {
     '555': '5x5x5', '555bf': '5x5 BLD',
     '666': '6x6x6', '777': '7x7x7',
     'pyram': 'Pyraminx', 'minx': 'Megaminx',
-    'sq1': 'Square-1', 'clock': 'Clock', 'skewb': 'Skewb',
+    'sq1': 'Square-1', 'clock': 'Clock', 'skewb': 'Skewb', 'fto': 'FTO',
 }
 
 

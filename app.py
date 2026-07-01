@@ -9,7 +9,10 @@ import pandas as pd
 import streamlit as st
 
 import charts
-from data_loader import load_data, format_time
+from data_loader import (
+    load_data, format_time, load_cstimer_data, _is_cstimer_format, PUZZLE_NAMES,
+)
+
 from stats import (
     compute_event_summary_fast as compute_event_summary,
     detect_pbs,
@@ -80,7 +83,7 @@ def df_cache_key(df: pd.DataFrame) -> str:
 # ═══════════════════════════════════════════════════════════
 with st.sidebar:
     st.header('📁 Данные')
-    uploaded = st.file_uploader('Загрузи txt файл', type=['txt', 'csv'])
+    uploaded = st.file_uploader('Загрузи txt/csv файл', type=['txt', 'csv'])
     st.markdown('---')
 
 if uploaded is None:
@@ -102,7 +105,22 @@ if uploaded is None:
 # Парсинг
 content = uploaded.read().decode('utf-8', errors='ignore')
 content_hash = f'{len(content)}_{uploaded.name}'
-df = load_data(content, _hash=content_hash)
+first_line = content[:content.index('\n')].strip() if '\n' in content else content
+
+if _is_cstimer_format(first_line):
+    with st.sidebar:
+        st.success('📋 Обнаружен формат **cstimer**')
+        st.caption('cstimer не хранит тип головоломки — выбери ивент:')
+        cstimer_event = st.selectbox(
+            'Ивент этой сессии',
+            list(PUZZLE_NAMES.values()),
+            index=list(PUZZLE_NAMES.values()).index('3x3x3'),
+        )
+    df = load_cstimer_data(
+        content, event_name=cstimer_event, _hash=content_hash + cstimer_event
+    )
+else:
+    df = load_data(content, _hash=content_hash)
 
 
 # ═══════════════════════════════════════════════════════════
